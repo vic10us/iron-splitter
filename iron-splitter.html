@@ -42,63 +42,90 @@ Example:
 @homepage github.io
 -->
 
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../core-resizable/core-resizable.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="iron-splitter-styles.html">
 
-<polymer-element name="core-splitter" attributes="direction locked minSize allowOverflow"
-    on-trackstart="{{trackStart}}" on-track="{{track}}" on-down="{{preventSelection}}">
+<dom-module id="iron-splitter">
 
 <template>
 
-  <link rel="stylesheet" href="core-splitter.css">
+  <style include="iron-splitter-styles"></style>
 
 </template>
+
 <script>
-
-  Polymer(Polymer.mixin({
-
-    /**
-     * Possible values are `left`, `right`, `up` and `down`.
-     *
-     * @attribute direction
-     * @type string
-     * @default 'left'
-     */
-    direction: 'left',
-
-    /**
-     * Minimum width to which the splitter target can be sized, e.g. 
-     * `minSize="100px"`
-     *
-     * @attribute minSize
-     * @type string
-     * @default ''
-     */
-    minSize: '',
-
-    /**
-     * Locks the split bar so it can't be dragged.
-     *
-     * @attribute locked
-     * @type boolean
-     * @default false
-     */
-    locked: false,
-
-    /**
-     * By default the parent and siblings of the splitter are set to overflow hidden. This helps
-     * avoid elements bleeding outside the splitter regions. Set this property to true to allow
-     * these elements to overflow.
-     *
-     * @attribute allowOverflow
-     * @type boolean
-     * @default false
-     */
-    allowOverflow: false,
-
-    // Listen for resize requests on parent, since splitter is peer to resizables
-    resizerIsPeer: true,
-
+ (function() {
+  Polymer({
+    is: 'iron-splitter',
+    properties: {
+      /**
+      * Possible values are `left`, `right`, `up` and `down`.
+      *
+      * @attribute direction
+      * @type string
+      * @default 'left'
+      */
+      direction: {
+        type: String,
+        notify: true,
+        value: 'left'
+       },
+  
+      /**
+      * Minimum width to which the splitter target can be sized, e.g. 
+      * `minSize="100px"`
+      *
+      * @attribute minSize
+      * @type string
+      * @default ''
+      */
+      minSize: {
+        type: String,
+        notify: true,
+        value: ''
+      },
+  
+      /**
+      * Locks the split bar so it can't be dragged.
+      *
+      * @attribute locked
+      * @type boolean
+      * @default false
+      */
+      locked: {
+        type: Boolean,
+        notify: true,
+        value: false
+      },
+  
+      /**
+      * By default the parent and siblings of the splitter are set to overflow hidden. This helps
+      * avoid elements bleeding outside the splitter regions. Set this property to true to allow
+      * these elements to overflow.
+      *
+      * @attribute allowOverflow
+      * @type boolean
+      * @default false
+      */
+      allowOverflow: {
+        type: Boolean,
+        notify: true,
+        value: false
+      },
+  
+      // Listen for resize requests on parent, since splitter is peer to resizables
+      resizerIsPeer: {
+        type: Boolean,
+        notify: true,
+        value: true
+      }
+    },
+    
+    behaviors: [
+      Polymer.IronResizableBehavior
+    ],
+    
     ready: function() {
       this.directionChanged();
     },
@@ -157,7 +184,8 @@ Example:
       e.preventDefault();
     }
 
-  }, Polymer.CoreResizer));
+  });
+ })();
 
 </script>
-</polymer-element>
+</dom-module>
